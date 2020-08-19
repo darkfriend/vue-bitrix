@@ -1,5 +1,5 @@
 {
-  "name": "vue-bx",
+  "name": "@darkfriend/vue-bx",
   "version": "0.0.1",
   "description": "A Vue components for Bitrix CMS",
   "main": "src/index.js",
