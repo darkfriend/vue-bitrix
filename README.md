@@ -8,7 +8,7 @@ Vue компоненты для админки 1С-Битрикс
 Как установить
 ==
 
-```shell script
+```
 npm install vue-bitrix -S
 ```
 
