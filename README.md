@@ -21,6 +21,12 @@ npm install vue-bitrix -S
 Как пользоваться
 ==
 
+```js
+import VueBitrix from 'vue-bitrix';
+
+Vue.use(VueBitrix);
+```
+
 Tabs
 ===
 ```html
