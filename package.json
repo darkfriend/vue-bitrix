@@ -1,0 +1,28 @@
+{
+  "name": "vue-bx",
+  "version": "0.0.1",
+  "description": "A Vue components for Bitrix CMS",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "rm -rf dist && NODE_ENV=production webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/darkfriend/vue-bx.git"
+  },
+  "keywords": [
+    "bitrix",
+    "darkfriend",
+    "bitrix components",
+    "components"
+  ],
+  "author": "darkfriend",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/darkfriend/vue-bx/issues"
+  },
+  "homepage": "https://github.com/darkfriend/vue-bx#readme",
+  "dependencies": {
+    "vue-dev-mixins": "^1.0.2"
+  }
+}

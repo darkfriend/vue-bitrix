@@ -1,0 +1,8 @@
+.DS_Store
+.idea
+node_modules
+TODO.md
+example
+example/**/build.js
+*.log
+package-lock.json
