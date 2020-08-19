@@ -9,7 +9,7 @@ Vue компоненты для админки 1С-Битрикс
 ==
 
 ```shell script
-npm install vue-bx -S
+npm install vue-bitrix -S
 ```
 
 Список компонентов
