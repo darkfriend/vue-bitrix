@@ -3,7 +3,8 @@
         <div class="adm-detail-tabs-block" id="tabControl_tabs" style="left: 0;">
 
             <span
-                v-for="(tab, key) in tabs"
+                v-for="(tab) in tabs"
+                :key="tab.key"
                 :title="tab.$attrs.headerTitle"
                 :id="`tab_cont_${tab.id}`"
                 class="adm-detail-tab"
@@ -202,7 +203,7 @@
                 }
                 return '';
             },
-            selectTab(key, event) {
+            selectTab(key) {
                 if(key == this.tabSelect) {
                     return;
                 }
