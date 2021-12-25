@@ -24,7 +24,7 @@
                 <span class="adm-detail-title-setting-btn adm-detail-title-expand"></span>
             </div>
 
-<!--            <div onclick="tabControl.ToggleFix('top')" class="adm-detail-pin-btn-tabs" title="Открепить панель"></div>-->
+            <!--            <div onclick="tabControl.ToggleFix('top')" class="adm-detail-pin-btn-tabs" title="Открепить панель"></div>-->
 
         </div>
 
@@ -43,9 +43,9 @@
 
                 <div class="adm-detail-content-btns-wrap adm-detail-content-btns-fixed">
                     <div class="adm-detail-content-btns" style="display: flex;">
-<!--                        <div onclick="tabControl.ToggleFix('bottom')" class="adm-detail-pin-btn" title="Открепить панель"></div>-->
+                        <!--                        <div onclick="tabControl.ToggleFix('bottom')" class="adm-detail-pin-btn" title="Открепить панель"></div>-->
                         <div class="btn--wrapper">
-                            <div class="adm-btn-load-img" v-show="isSubmit"></div>
+                            <div class="adm-btn-load-img adm-btn-load-img-green" v-show="isSubmit"></div>
                             <input
                                 type="submit"
                                 name="save"
@@ -54,7 +54,13 @@
                                 class="adm-btn-save"
                                 @click.prevent="$emit('save')"
                                 :disabled="isSubmit"
-                                :class="isSubmit?'adm-btn-load':''"
+                                :class="{
+                                    'adm-btn-load': isSubmit,
+                                    'adm-btn-add': isSubmit,
+                                }"
+                                :style="{
+                                    padding: isSubmit ? '28px !important' : ''
+                                }"
                             >
                         </div>
 
@@ -86,176 +92,182 @@
 </template>
 
 <script>
-    export default {
-        name: "bxTabs",
-        props: {
-            formSettings: {
-                type: Object,
-                default() {
-                    return {
-                        method: 'post',
-                        action: '/bitrix/admin/settings.php?mid=dev2fun.multidomain&lang=ru&tabControl_active_tab=edit1',
-                        enctype: 'multipart/form-data',
-                        name: 'editform',
-                        class: 'editform',
-                        sessid: '', // required
-                    };
-                }
-            },
-            selected: {
-                type: String,
-                default() {
-                    return ''
-                },
-            },
-            isSubmit: {
-                type: Boolean,
-                default(){
-                    return false;
-                }
-            },
-        },
-        data() {
-            return {
-                tabSelectAll: false,
-                tabSelect: 'settings',
-                activeTabHash: '',
-                activeTabIndex: '',
-                tabs: [],
-                options: {
-                    useUrlFragment: true,
-                    defaultTabHash: null,
-                },
-            };
-        },
-        computed: {
-            expandLinkData() {
-                let result = {};
-                if(this.tabSelectAll) {
-                    result = {
-                        title: 'Развернуть все вкладки на одну страницу',
-                    };
-                } else {
-                    result = {
-                        title: 'Свернуть вкладки',
-                    };
-                }
-                this.$emit('expanded', result);
-                return result;
-            },
-            formData() {
-                console.log(Object.assign(
-                    {},
-                    {
-                        method: 'post',
-                        action: location.href,
-                        enctype: 'multipart/form-data',
-                        name: 'editform',
-                        class: 'editform',
-                        sessid: '',
-                    },
-                    this.formSettings
-                ));
-                return Object.assign(
-                    {},
-                    {
-                        method: 'post',
-                        action: location.href,
-                        enctype: 'multipart/form-data',
-                        name: 'editform',
-                        class: 'editform',
-                        sessid: '',
-                    },
-                    this.formSettings
-                );
-            },
-        },
-        created() {
-            if(!this.isEmpty(this.selected)) {
-                this.options.defaultTabHash = this.selected;
+export default {
+    name: "bxTabs",
+    props: {
+        formSettings: {
+            type: Object,
+            default() {
+                return {
+                    method: 'post',
+                    action: '/bitrix/admin/settings.php?mid=dev2fun.multidomain&lang=ru&tabControl_active_tab=edit1',
+                    enctype: 'multipart/form-data',
+                    name: 'editform',
+                    class: 'editform',
+                    sessid: '', // required
+                };
             }
-            this.tabs = this.$children;
         },
-        mounted() {
-            window.addEventListener('hashchange', () => this.selectTab(window.location.hash));
-            if (this.findTab(window.location.hash)) {
-                this.selectTab(window.location.hash);
+        selected: {
+            type: String,
+            default() {
+                return ''
+            },
+        },
+        isSubmit: {
+            type: Boolean,
+            default(){
+                return false;
+            }
+        },
+        isLoader: {
+            type: Boolean,
+            default(){
+                return false;
+            }
+        },
+    },
+    data() {
+        return {
+            tabSelectAll: false,
+            tabSelect: 'settings',
+            activeTabHash: '',
+            activeTabIndex: '',
+            tabs: [],
+            options: {
+                useUrlFragment: true,
+                defaultTabHash: null,
+            },
+        };
+    },
+    computed: {
+        expandLinkData() {
+            let result = {};
+            if(this.tabSelectAll) {
+                result = {
+                    title: 'Развернуть все вкладки на одну страницу',
+                };
+            } else {
+                result = {
+                    title: 'Свернуть вкладки',
+                };
+            }
+            this.$emit('expanded', result);
+            return result;
+        },
+        formData() {
+            console.log(Object.assign(
+                {},
+                {
+                    method: 'post',
+                    action: location.href,
+                    enctype: 'multipart/form-data',
+                    name: 'editform',
+                    class: 'editform',
+                    sessid: '',
+                },
+                this.formSettings
+            ));
+            return Object.assign(
+                {},
+                {
+                    method: 'post',
+                    action: location.href,
+                    enctype: 'multipart/form-data',
+                    name: 'editform',
+                    class: 'editform',
+                    sessid: '',
+                },
+                this.formSettings
+            );
+        },
+    },
+    created() {
+        if(!this.isEmpty(this.selected)) {
+            this.options.defaultTabHash = this.selected;
+        }
+        this.tabs = this.$children;
+    },
+    mounted() {
+        window.addEventListener('hashchange', () => this.selectTab(window.location.hash));
+        if (this.findTab(window.location.hash)) {
+            this.selectTab(window.location.hash);
+            return;
+        }
+        if(this.options.defaultTabHash !== null && this.findTab("#" + this.options.defaultTabHash)) {
+            this.selectTab("#" + this.options.defaultTabHash);
+            return;
+        }
+        if (this.tabs.length) {
+            this.selectTab(this.tabs[0].hash);
+        }
+    },
+    methods: {
+        findTab(hash) {
+            return this.tabs.find(tab => tab.hash === hash);
+        },
+        isActive(key) {
+            return key === this.tabSelect;
+        },
+        tabClass(key) {
+            if (this.isActive(key) && !this.tabSelectAll) {
+                return 'adm-detail-tab-active';
+            }
+            return '';
+        },
+        selectTab(key) {
+            if(key === this.tabSelect) {
                 return;
             }
-            if(this.options.defaultTabHash !== null && this.findTab("#" + this.options.defaultTabHash)) {
-                this.selectTab("#" + this.options.defaultTabHash);
+            const selectedTab = this.findTab(key);
+            if (! selectedTab) {
                 return;
             }
-            if (this.tabs.length) {
-                this.selectTab(this.tabs[0].hash);
-            }
+
+            // if (selectedTab.isDisabled) {
+            //     event.preventDefault();
+            //     return;
+            // }
+
+            // if (this.lastActiveTabHash === selectedTab.hash) {
+            //     this.$emit('clicked', { selectedTab });
+            //     return;
+            // }
+            this.tabs.forEach(tab => {
+                tab.isActive = (tab.hash === selectedTab.hash);
+            });
+            // this.$emit('changed', { tab: selectedTab });
+            this.activeTabHash = selectedTab.hash;
+            this.activeTabIndex = this.getTabIndex(key);
+            this.tabSelect = selectedTab.hash;
+            location.hash = selectedTab.id;
+
+            this.$emit('selected', key);
         },
-        methods: {
-            findTab(hash) {
-                return this.tabs.find(tab => tab.hash === hash);
-            },
-            isActive(key) {
-                return key === this.tabSelect;
-            },
-            tabClass(key) {
-                if (this.isActive(key) && !this.tabSelectAll) {
-                    return 'adm-detail-tab-active';
-                }
-                return '';
-            },
-            selectTab(key) {
-                if(key == this.tabSelect) {
-                    return;
-                }
-                const selectedTab = this.findTab(key);
-                if (! selectedTab) {
-                    return;
-                }
-
-                // if (selectedTab.isDisabled) {
-                //     event.preventDefault();
-                //     return;
-                // }
-
-                // if (this.lastActiveTabHash === selectedTab.hash) {
-                //     this.$emit('clicked', { selectedTab });
-                //     return;
-                // }
-                this.tabs.forEach(tab => {
-                    tab.isActive = (tab.hash === selectedTab.hash);
-                });
-                // this.$emit('changed', { tab: selectedTab });
-                this.activeTabHash = selectedTab.hash;
-                this.activeTabIndex = this.getTabIndex(key);
-                this.tabSelect = selectedTab.hash;
-                location.hash = selectedTab.id;
-
-                this.$emit('selected', key);
-            },
-            getTabIndex(hash) {
-                const tab = this.findTab(hash);
-                return this.tabs.indexOf(tab);
-            },
-            getTabHash(index){
-                const tab = this.tabs.find(tab => this.tabs.indexOf(tab) === index);
-                if (!tab) return;
-                return tab.hash;
-            },
-            setShowAll(action=null) {
-                this.tabSelectAll = action ?? !this.tabSelectAll;
-                this.$emit('selectedAll', this.tabSelectAll);
-            },
+        getTabIndex(hash) {
+            const tab = this.findTab(hash);
+            return this.tabs.indexOf(tab);
         },
-    }
+        getTabHash(index){
+            const tab = this.tabs.find(tab => this.tabs.indexOf(tab) === index);
+            if (!tab) return;
+            return tab.hash;
+        },
+        setShowAll(action=null) {
+            this.tabSelectAll = action ?? !this.tabSelectAll;
+            this.$emit('selectedAll', this.tabSelectAll);
+        },
+    },
+}
 </script>
 
 <style scoped>
-    .btn--wrapper {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .btn--wrapper .adm-btn-load-img{
-        z-index: 1;
-    }
+.btn--wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.btn--wrapper .adm-btn-load-img{
+    z-index: 1;
+}
 </style>
